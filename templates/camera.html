@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>PCB缺陷检测</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      
+      h1 {
+        text-align: center;
+      }
+      
+      #container{
+        margin: 50px;
+      }
+
+      #video {
+        width: 500px;
+        height: 300px;
+        border: 1px solid #ddd;
+      }
+      
+      #image {
+        width: 500px;
+        height: 300px;
+      }
+      
+      #canvas {
+        display: none;
+      }
+      
+      #snap {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        margin-top: 20px;
+        margin-left: 200px;
+      }
+      
+      #submit {
+        padding: 10px 20px;
+        background-color: #2196f3;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: none;
+        margin-top: 20px;
+        margin-left: 200px;
+      }
+      
+      #left{
+        float: left;
+        width: 50%;
+      }
+
+      #right{
+        float: left;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+      <h1>PCB缺陷检测</h1>
+      <div id="left">
+        <div id="container">
+          <video id="video" autoplay></video>
+          <canvas id="canvas"></canvas>
+          <button id="snap">Take Photo</button>
+        </div>
+      </div>
+      <div id="right">
+        <div id="container">
+          <h3>{{imagePath}}test</h3>
+          {% comment %} <img src={{imagePath}} id='image' alt="test"> {% endcomment %}
+          <button id="submit">Submit</button>
+        </div>
+      </div>
+    <script>
+      var video = document.getElementById('video')
+      var canvas = document.getElementById('canvas')
+      var image = document.getElementById('image')
+      canvas.width = 1920 // 设置 canvas 宽度为 1920 像素
+      canvas.height = 1080 // 设置 canvas 高度为 1080 像素
+      // 获取摄像头访问权限，并将视频流渲染到<video>标签中
+      navigator.mediaDevices
+        .getUserMedia({ video: { facingMode: 'environment' } })
+        .then(function (stream) {
+          video.srcObject = stream
+          video.play()
+        })
+        .catch(function (error) {
+          console.error(error)
+        })
+      
+      // 点击拍照按钮，将照片转化为base64 URL
+      document.getElementById('snap').addEventListener('click', function () {
+        //video.style.display = none
+        //canvas.style.display = inline-block
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
+        document.getElementById('submit').style.display = 'block'
+        const imgURL = canvas.toDataURL('image/jpeg', 1.0)
+        var formData = new FormData()
+        formData.append('img', imgURL)
+        fetch('/camera/', {
+          method: 'POST',
+          body: formData
+        })
+          .then((response) => {
+            alert(response)
+            console.log(response)
+          })
+          .catch((error) => console.error(error))
+        
+        
+      })
+      
+      
+      // 提交表单，将照片上传到Django服务器并显示结果
+      document.getElementById('submit').addEventListener('click', function () {
+        var formData = new FormData()
+        formData.append('photo', photo.files[0])
+        fetch('/detect', {
+          method: 'POST',
+          body: formData
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            var result = document.getElementById('result')
+            result.innerHTML = ''
+            data.forEach(function (item) {
+              var p = document.createElement('p')
+              p.innerHTML = item.class_name + ' (' + item.score.toFixed(2) + ')'
+              result.appendChild(p)
+            })
+          })
+          .catch((error) => console.error(error))
+      })
+    </script>
+  </body>
+</html>

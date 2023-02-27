@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Take Photo and Upload to Django</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      
+      #container {
+        margin: 20px auto;
+        max-width: 600px;
+        text-align: center;
+      }
+      
+      #video {
+        width: 100%;
+        height: auto;
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+      }
+      
+      #canvas {
+        display: none;
+      }
+      
+      #photo {
+        display: none;
+      }
+      
+      #snap {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 20px;
+      }
+      
+      #submit {
+        padding: 10px 20px;
+        background-color: #2196f3;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: none;
+      }
+      
+      #result {
+        margin-top: 20px;
+        text-align: left;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+      }
+
+      .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .modal-body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      .modal-footer button {
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <h1>Take Photo and Upload to Django</h1>
+      <video id="video" autoplay></video>
+      <canvas id="canvas"></canvas>
+      <br />
+      <button id="snap">Take Photo</button>
+      <button id="submit">Submit</button>
+      <div id="result"></div>
+    </div>
+    <!-- 模态框元素 -->
+    <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="photoModalLabel">确认上传图片</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <img id="photoPreview" class="img-fluid" src="" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" id="uploadButton">上传</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var video = document.getElementById('video')
+      var canvas = document.getElementById('canvas')
+      var photo = document.getElementById('photo')
+      
+      // 获取摄像头访问权限，并将视频流渲染到<video>标签中
+      navigator.mediaDevices
+        .getUserMedia({ video: { facingMode: 'environment' } })
+        .then(function (stream) {
+          video.srcObject = stream
+          video.play()
+        })
+        .catch(function (error) {
+          console.error(error)
+        })
+      
+      function capturePhoto() {
+        // ... 拍照代码 ...
+      
+        // 显示模态框和图片
+        const photoModal = document.getElementById('photoModal')
+        const photoPreview = document.getElementById('photoPreview')
+        photoPreview.src = canvas.toDataURL('image/jpeg')
+        photoModal.style.display = 'block'
+      
+        // 监听上传按钮的点击事件
+        const uploadButton = document.getElementById('uploadButton')
+        uploadButton.onclick = function () {
+          // 关闭模态框
+          photoModal.style.display = 'none'
+      
+          // 将拍摄的图片上传至服务器
+          /*const formData = new FormData()
+          formData.append('photo', blob, 'photo.jpeg')
+          fetch('/detect/', {
+            method: 'POST',
+            body: formData
+          })
+            .then((response) => response.json())
+            .then((result) => {
+              // 处理返回结果
+            })
+            .catch((error) => console.error(error))*/
+        
+        }
+      }
+      document.getElementById('snap').addEventListener('click',capturePhoto())
+      // 点击拍照按钮，将照片转化为base64 URL
+      /*document.getElementById('snap').addEventListener('click', function () {
+        //video.style.display = none
+        //canvas.style.display = inline-block
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
+        video.style.display = none
+        const imgURL = canvas.toDataURL('image/jpeg')
+        var formData = new FormData()
+        formData.append('img', imgURL)
+        fetch('/uploadfile/', {
+          method: 'POST',
+          body: formData
+        })
+          .then((response) => response.json)
+          .catch((error) => console.error(error))
+      })*/
+      
+      // 提交表单，将照片上传到Django服务器并显示结果
+      document.getElementById('submit').addEventListener('click', function () {
+        var formData = new FormData()
+        formData.append('photo', photo.files[0])
+        fetch('/detect', {
+          method: 'POST',
+          body: formData
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            var result = document.getElementById('result')
+            result.innerHTML = ''
+            data.forEach(function (item) {
+              var p = document.createElement('p')
+              p.innerHTML = item.class_name + ' (' + item.score.toFixed(2) + ')'
+              result.appendChild(p)
+            })
+          })
+          .catch((error) => console.error(error))
+      })
+    </script>
+  </body>
+</html>
