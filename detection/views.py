@@ -1,16 +1,9 @@
 from django.shortcuts import render
-import base64
 import os
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
-from .models import PCBModel # 机器学习模型
 from pcb_detection import settings
-import uuid
 from django.conf import settings
-import matplotlib.pyplot as plt 
-import numpy as np
-import urllib
-import cv2
 from base64 import b64decode
 
 # PCB检测
