@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Image</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        img{
+            width: 400px;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <form method='post' enctype="multipart/form-data" action="">
+		{% csrf_token %} {# 【2】post上传别忘记带上验证标识 #}
+		<input type="file" name="img_data"><br/>
+		<input type="submit" value="上传">
+	</form>
+    <h3>{{imagePath}}</h3>
+    <img src={{imagePath}} />
+    
+</body>
+</html>

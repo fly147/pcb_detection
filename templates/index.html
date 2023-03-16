@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'base.html' %}
 {% block title %}主页{% endblock %}
 {% block content %}
@@ -7,3 +8,53 @@
     <h1>你尚未登录，只能访问公开内容！</h1>
     {% endif %}
 {% endblock %}
+=======
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>PCB缺陷检测</title>
+</head>
+<body>
+    <h1>PCB缺陷检测</h1>
+    {% comment %} <form id="upload-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="image" id="image">
+        <button type="submit">上传图片</button>
+    </form>
+    <div id="result">{{result}}</div> {% endcomment %}
+    <form method='post' enctype="multipart/form-data" action="">
+		{% csrf_token %} {# 【2】post上传别忘记带上验证标识 #}
+		<input type="file" name="img_data"><br/>
+		<input type="submit" value="上传">
+	</form>
+    <h3>{{result}}</h3>
+    {% comment %} <img src={{result}} /> {% endcomment %}
+    {% comment %} <img src="/home/huhao/workface/Django-PCB-Detection/pcb_detection/output/01_missing_hole_01.jpg" /> {% endcomment %}
+    {% comment %} <img src="../static/images/01_missing_hole_02.jpg" width="1000" height="400" /> {% endcomment %}
+    {% comment %} <img src="../output/01_missing_hole_02.jpg" width="1000" height="400" /> {% endcomment %}
+    <img src="{% static result %}" width="1200" height="500" />
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/');
+            xhr.setRequestHeader('X-CSRFToken', document.getElementsByName('csrfmiddlewaretoken')[0].value);
+            xhr.onload = function() {
+                document.getElementById('result').textContent = this.responseText;
+            };
+            var form_data = new FormData();
+            var image = document.getElementById('image').files[0];
+            form_data.append('image', image, image.name);
+            var reader = new FileReader();
+            reader.readAsDataURL(image);
+            reader.onload = function() {
+                form_data.append('img_data', reader.result);
+                xhr.send(form_data);
+            };
+        });
+    </script>
+</body>
+</html>
+>>>>>>> acd14c039019ca311530c0592841de386bbb920c

@@ -19,14 +19,24 @@
       }
 
       #video {
+<<<<<<< HEAD
         width: 700px;
         height: 450px;
+=======
+        width: 500px;
+        height: 300px;
+>>>>>>> acd14c039019ca311530c0592841de386bbb920c
         border: 1px solid #ddd;
       }
       
       #image {
+<<<<<<< HEAD
         width: 700px;
         height: 450px;
+=======
+        width: 500px;
+        height: 300px;
+>>>>>>> acd14c039019ca311530c0592841de386bbb920c
       }
       
       #canvas {
@@ -79,12 +89,19 @@
       </div>
       <div id="right">
         <div id="container">
+<<<<<<< HEAD
           <img src="" id='image' alt="test">
           <button id="submit">提交</button>
         </div>
       </div>
       <h3>result:{{result}}</h3>
       <img src='data:image/jpeg;base64,{{result}}' id='result' alt="result">
+=======
+          <img src='' id='image' alt="test">
+          <button id="submit">提交</button>
+        </div>
+      </div>
+>>>>>>> acd14c039019ca311530c0592841de386bbb920c
       <script>
         var video = document.getElementById('video')
         var canvas = document.getElementById('canvas')
@@ -120,8 +137,12 @@
             body: formData
           })
             .then((response) => {
+<<<<<<< HEAD
               console.log(response)
               // image.src = '../output/test.jpg'
+=======
+              image.src = '../output/test.jpg'
+>>>>>>> acd14c039019ca311530c0592841de386bbb920c
             })
             .catch((error) => console.error(error))
         })

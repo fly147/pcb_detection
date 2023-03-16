@@ -45,7 +45,11 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+<<<<<<< HEAD
     #'django.middleware.csrf.CsrfViewMiddleware',
+=======
+    # 'django.middleware.csrf.CsrfViewMiddleware',
+>>>>>>> acd14c039019ca311530c0592841de386bbb920c
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -82,6 +86,7 @@ DATABASES = {
     }
 }
 
+<<<<<<< HEAD
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
@@ -93,6 +98,8 @@ DATABASES = {
 #     }
 # }
 
+=======
+>>>>>>> acd14c039019ca311530c0592841de386bbb920c
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -116,15 +123,25 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
+<<<<<<< HEAD
 LANGUAGE_CODE = 'zh-hans'
 
 TIME_ZONE = 'Asia/Shanghai'
+=======
+LANGUAGE_CODE = 'en-us'
+
+TIME_ZONE = 'UTC'
+>>>>>>> acd14c039019ca311530c0592841de386bbb920c
 
 USE_I18N = True
 
 USE_L10N = True
 
+<<<<<<< HEAD
 USE_TZ = False
+=======
+USE_TZ = True
+>>>>>>> acd14c039019ca311530c0592841de386bbb920c
 
 
 # Static files (CSS, JavaScript, Images)
@@ -137,6 +154,7 @@ USE_TZ = False
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #静态文件
+<<<<<<< HEAD
 STATIC_URL = '/static/'
 # STATIC_URL = '/output/'
 
@@ -147,5 +165,20 @@ OUTPUT_ROOT = 'static/output/'
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "output"),
+=======
+# STATIC_URL = '/static/'
+STATIC_URL = '/output/'
+
+STATIC_ROOT = os.path.join(os.path.dirname(__file__),'static')
+MEDIA_ROOT = 'static/images'
+# STATICFILES_DIRS = (
+#     ('images',os.path.join(BASE_DIR,MEDIA_ROOT).replace('\\','/') ),
+#     ('output',os.path.join(BASE_DIR,'output').replace('\\','/') ),
+# )
+STATICFILES_DIRS=[
+    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "output"),
+    # "/home/huhao/workface/Django-PCB-Detection/pcb_detection/output",
+>>>>>>> acd14c039019ca311530c0592841de386bbb920c
 ]
 APPEND_SLASH=False 
