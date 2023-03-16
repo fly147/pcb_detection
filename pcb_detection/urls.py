@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from detection import views
-<<<<<<< HEAD
 from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import url
@@ -32,12 +31,3 @@ urlpatterns = [
     path('show_check/', views.show_check_func,name='show_check'),
     path('show_defect/',views.show_defect,name='show_defect')
 ]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-=======
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('upload/', views.upload),
-    path('camera/', views.camera),
-    path('popup/',views.popup),
-    path('capture/',views.capture),
-]
->>>>>>> acd14c039019ca311530c0592841de386bbb920c
