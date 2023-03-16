@@ -1,0 +1,130 @@
+{%load static%}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Image</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      
+      h1 {
+        text-align: center;
+      }
+      
+      #container{
+        margin: 50px;
+      }
+
+      #video {
+        width: 700px;
+        height: 450px;
+        border: 1px solid #ddd;
+      }
+      
+      #image {
+        width: 700px;
+        height: 450px;
+      }
+      
+      #canvas {
+        display: none;
+      }
+      
+      #snap {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        margin-top: 20px;
+        margin-left: 200px;
+      }
+      
+      #submit {
+        padding: 10px 20px;
+        background-color: #2196f3;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: none;
+        margin-top: 20px;
+        margin-left: 200px;
+      }
+      
+      #left{
+        float: left;
+        width: 50%;
+      }
+
+      #right{
+        float: left;
+        width: 50%;
+      }
+    </style>
+</head>
+<body>
+    <h1>PCB缺陷检测</h1>
+      <div id="left">
+        <div id="container">
+          <video id="video" autoplay></video>
+          <canvas id="canvas"></canvas>
+          <button id="snap">拍照</button>
+        </div>
+      </div>
+      <div id="right">
+        <div id="container">
+          <img src="" id='image' alt="test">
+          <button id="submit">提交</button>
+        </div>
+      </div>
+      <h3>result:{{result}}</h3>
+      <img src='data:image/jpeg;base64,{{result}}' id='result' alt="result">
+      <script>
+        var video = document.getElementById('video')
+        var canvas = document.getElementById('canvas')
+        var image = document.getElementById('image')
+        canvas.width = 1920 // 设置 canvas 宽度为 1920 像素
+        canvas.height = 1080 // 设置 canvas 高度为 1080 像素
+        // 获取摄像头访问权限，并将视频流渲染到<video>标签中
+        navigator.mediaDevices
+          .getUserMedia({ video: { facingMode: 'environment' } })
+          .then(function (stream) {
+            video.srcObject = stream
+            video.play()
+          })
+          .catch(function (error) {
+            console.error(error)
+          })
+        
+        // 点击拍照按钮，将照片转化为base64 URL
+        document.getElementById('snap').addEventListener('click', function () {
+          canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
+          document.getElementById('submit').style.display = 'block'
+          const imgURL = canvas.toDataURL('image/jpeg', 1.0)
+          image.src = imgURL
+        })
+        
+        // 点击提交按钮，将图片上传进行检测
+        document.getElementById('submit').addEventListener('click', function () {
+          var formData = new FormData()
+          imgURL = image.src
+          formData.append('img', imgURL)
+          fetch('/upload/', {
+            method: 'POST',
+            body: formData
+          })
+            .then((response) => {
+              console.log(response)
+              // image.src = '../output/test.jpg'
+            })
+            .catch((error) => console.error(error))
+        })
+      </script>
+</body>
+</html>

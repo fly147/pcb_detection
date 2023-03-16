@@ -1,0 +1,40 @@
+{% extends 'home.html' %}
+
+
+{% block 'show_book' %}
+    <p><a href="#" class="btn btn-warning btn-lg">新增图书数据</a></p>
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>排序</th>
+            <th>书名</th>
+            <th>价格</th>
+            <th>作者</th>
+            <th>出版日期</th>
+            <th>出版社</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for book_obj in book_obj_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td> <!--有序数列-->
+                <td>{{ book_obj.name }}</td>
+                <td>{{ book_obj.price }}</td>
+                <td>
+                    {% for author in book_obj.author.all %}
+                        {{ author.name }}
+                    {% endfor %}
+                </td>
+                <td>{{ book_obj.publish_time|date:'Y年/m月/d日' }}</td>
+                <td>{{ book_obj.publish.name }}</td>
+                <td>
+                    <a href="{% url 'edit_view' book_obj.pk %}" class="btn btn-success">编辑</a>
+                    <a href="{% url 'delete_view' book_obj.pk %} " class="btn btn-danger">删除</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

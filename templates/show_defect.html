@@ -1,0 +1,54 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block 'show_book' %}
+<h2 class="text-center">查看检测记录</h2>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>排序</th>
+            <th>原始图片</th>
+            <th>检测图片</th>
+            <th>检测时间</th>
+            <th>检测人员</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for defect_obj in defect_obj_list %}
+        <tr>
+            <td>{{ defect_obj.id }}</td> <!--有序数列-->
+            <td>
+                <a href="{{ defect_obj.origin_picture }}" data-fancybox="images">
+                    <img src="{{ defect_obj.origin_picture }}" style='width: 50px;height: 50px;' alt="">
+                </a>
+            </td>
+            <td>
+                <a href="{{ defect_obj.check_picture }}" data-fancybox="images">
+                    <img src="{{ defect_obj.check_picture }}" style='width: 50px;height: 50px;' alt="">
+                </a>
+            </td>
+
+            <td>{{ defect_obj.check_time|date:'Y年/m月/d日' }}</td>
+            <td>{{ defect_obj.check_pepole.username }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    document.getElementById('showDefect').classList.add('active')
+    $(document).ready(function () {
+        $("[data-fancybox='images']").fancybox({
+            buttons: [
+                "zoom",
+                "slideShow",
+                "fullScreen",
+                "download",
+                "thumbs",
+                "close"
+            ],
+            loop: true
+        });
+    });
+</script>
+{% endblock %}
