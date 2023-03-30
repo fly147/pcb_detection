@@ -24,6 +24,8 @@ def detect(image_file):
     return output_image
 
 # 压缩base64的图片
+
+
 def compress_image_bs4(b64, mb=100, k=0.9):
     """不改变图片尺寸压缩到指定大小
     :param outfile: 压缩文件保存地址
@@ -60,16 +62,16 @@ def upload(request):
         with open(filePath, 'wb') as fp:
             fp.write(bytes)
         # imagePath = '/home/huhao/workface/Django-PCB-Detection/pcb_detection/'+ filePath
-        imagePath = 'D:\\Develop\\pcb_detection\\'+ filePath
+        imagePath = 'D:\\Develop\\pcb_detection\\' + filePath
         # 在这里进行目标检测，并返回结果
         deImagePath = detect(imagePath)
-        deImagePath = 'D:\\Develop\\pcb_detection\\output\\'+ deImagePath
+        deImagePath = 'D:\\Develop\\pcb_detection\\output\\' + deImagePath
         pic = open(deImagePath, "rb")
         b64 = base64.b64encode(pic.read())
         pic.close()
         result = compress_image_bs4(b64)
-        print("result:",result)
-        context = {'result': result,}
+        print("result:", result)
+        context = {'result': result, }
         print(context)
         # t = loader.get_template("upload.html")
         # c = {"result": result}
@@ -110,8 +112,7 @@ def camera(request):
         return render(request, 'camera.html')
 
 
-def popup(request):
-    return render(request, 'popup.html')
+
 
 
 def check(request):
@@ -125,7 +126,6 @@ def hash_code(s, salt='pcb'):  # 加点盐
     s += salt
     h.update(s.encode())  # update方法只接收bytes类型
     return h.hexdigest()
-
 
 
 def login(request):
@@ -186,12 +186,6 @@ def logout(request):
 
 
 # 用户界面
-
-def show_book_func(request):
-    # book_obj_list = models.Book.objects.all()
-    return render(request, 'show_book.html', locals())
-
-
 def show_check_func(request):
     if request.method == 'POST':
         if request.session.get('is_login', None):
@@ -219,10 +213,7 @@ def show_check_func(request):
         new_check.save()
         data = {'check_image_path': new_check.check_picture}
         return JsonResponse(data)
-        # return render(request, 'show_check.html', {'check_image_path': check_image_path})
-        # return render(request, 'show_check.html', locals())
     elif request.method == 'GET':
-        # return render(request, 'show_check.html')
         return render(request, 'show_check.html', locals())
 
 

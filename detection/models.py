@@ -7,8 +7,8 @@ class User(models.Model):
     is_superuser = models.BooleanField(default=False)
     
     class Meta:
-        verbose_name = '用户'
-        verbose_name_plural = '用户'
+        verbose_name = '操作员'
+        verbose_name_plural = '操作员'
 
 class Check(models.Model):
     check_time = models.DateField(null=True,blank=True,verbose_name='检测时间')

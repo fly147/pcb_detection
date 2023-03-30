@@ -24,10 +24,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('upload/', views.upload),
     path('check/',views.check),
-    url(r'^login/', views.login),
-    url(r'^register/', views.register),
-    url(r'^logout/', views.logout),
-    path('show_book/', views.show_book_func,name='show_view'),
+    path('',views.login),
+    path('login/', views.login),
+    path('register/', views.register),
+    path('logout/', views.logout),
     path('show_check/', views.show_check_func,name='show_check'),
     path('show_defect/',views.show_defect,name='show_defect')
 ]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
